@@ -20,12 +20,13 @@ const SingleCountry = () => {
 			.then((countryResponse) => {
 				const countryData = countryResponse.data[0];
 				setCountry(countryData);
-				console.log(countryData);
+				// console.log(countryData);
 
 				axios
 					.get(`${weatherUrl}${name}&aqi=no.`)
 					.then((weatherResponse) => {
 						const weatherData = weatherResponse.data;
+						// console.log(weatherData)
 						setWeather(weatherData);
 					})
 					.catch((weatherError) => {
@@ -42,15 +43,53 @@ const SingleCountry = () => {
 		for (let x = 0; x < country.borders.length(); x++) {
 			arr.push(country.borders[x]);
 		}
+		
 		return arr;
 	};
+
+	let weatherInfo = (<p>There is no weather info right now</p>);
+
+	if(weather?.current?.condition?.text){
+		weatherInfo = (
+			<div>
+				<h6>
+					<b>Temp:</b> {weather.current.temp_c}
+				</h6>
+				<h6>
+					<b>Condition:</b> {weather.current.condition}
+				</h6>
+			</div>
+		);
+	}
 
 	return (
 		<div>
 			{weather ? (
 				<Row>
 					<Col className="my-3">
-						<Image src={country.flags.svg} />
+						<Image className="w-100 " src={country.flags.svg} />
+
+	<Accordion defaultActiveKey="0" className="my-2">
+    <Accordion.Item eventKey="0">
+        <Accordion.Header>Bordering Nation</Accordion.Header>
+        <Accordion.Body>
+		{country.borders ? (
+			country.borders.map((border, index) => (
+				<div key={index}>{border}</div>
+			))
+			) : (
+				<p>No borders found for this country.</p>
+			)}
+        </Accordion.Body>
+    </Accordion.Item>
+	<Accordion.Item eventKey="1">
+        <Accordion.Header>Map</Accordion.Header>
+        <Accordion.Body>
+		<iframe title="map" width="100%" height="400" frameBorder="0" src={`https://www.openstreetmap.org/export/embed.html?bbox=${country.latlng[1]},${country.latlng[0]}`} ></iframe>
+
+        </Accordion.Body>
+    </Accordion.Item>
+    </Accordion>
 					</Col>
 					<Col className="my-3">
 						<h1 className="bd-title mb-4">
@@ -65,52 +104,13 @@ const SingleCountry = () => {
 						<h5>
 							<b>Subregion :</b> {country.subregion}
 						</h5>
-						<Accordion className=" p-1">
-							<Accordion.Item>
-								<Accordion.Header>Bordering Nations</Accordion.Header>
-								<Accordion.Body>
-									{country.borders ? (
-										country.borders.map((border, index) => (
-											<div key={index}>{border}</div>
-										))
-									) : (
-										<p>No borders found for this country.</p>
-									)}
-								</Accordion.Body>
-							</Accordion.Item>
 
-							<Accordion.Item>
-								<Accordion.Header>Map</Accordion.Header>
-								<Accordion.Body>
-                <iframe
-                    width="100%"
-                    height="400"
-                    frameBorder="0"
-                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${country.latlng[1]},${country.latlng[0]}`}
-                ></iframe>
-
-									<br />
-									<small>
-										<a href={country.maps.openStreetMaps}>View Larger Map</a>
-									</small>
-								</Accordion.Body>
-							</Accordion.Item>
-						</Accordion>
 						<Col>
 							<h2>
 								<b>Weather</b>
 							</h2>
 							<div>
-							{weather?.current?.condition && (
-                                    <div>
-                                        <h6>
-                                            <b>Temp:</b> {weather.current.temp_c}
-                                        </h6>
-                                        <h6>
-                                            <b>Condition:</b> {weather.current.condition.condition}
-                                        </h6>
-                                    </div>
-                                )}
+							{weatherInfo}
 							</div>
 						</Col>
 					</Col>
