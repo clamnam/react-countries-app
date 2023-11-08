@@ -9,10 +9,28 @@ import Weather from "../components/Weather";
 const weatherKey = `c1ae794e4fbf4a4a82f173252230111`;
 const weatherUrl = `http://api.weatherapi.com/v1/current.json?key=c1ae794e4fbf4a4a82f173252230111&q=`;
 const countryUrl = `https://restcountries.com/v3.1/name/`;
+const borderUrl = `https://restcountries.com/v3/alpha/`
 const SingleCountry = () => {
 	let { name } = useParams();
 	const [country, setCountry] = useState(null);
+	const [border, setBorder] = useState(null);
+
 	const [weather, setWeather] = useState(null);
+
+	const Borders = () => {
+		let borderData = [];
+	
+		if (country && country.borders != null) {
+			for (let x = 0; x < country.borders.length; x++) {
+				axios.get(`${borderUrl}${country.borders[x]}?fullText=true`).then((borderResponse) => {
+					borderData.push(borderResponse.data); 
+					setBorder(borderData);
+				});
+			}
+		}
+	};
+	
+	
 
 	useEffect(() => {
 		axios
@@ -36,16 +54,11 @@ const SingleCountry = () => {
 			.catch((error) => {
 				console.log("Error fetching country data: ", error);
 			});
-	}, [name]);
+			Borders();
+	}, [name,Borders]);
 
-	const borders = () => {
-		let arr = [];
-		for (let x = 0; x < country.borders.length(); x++) {
-			arr.push(country.borders[x]);
-		}
-		
-		return arr;
-	};
+
+	
 
 	let weatherInfo = (<p>There is no weather info right now</p>);
 
@@ -73,13 +86,14 @@ const SingleCountry = () => {
     <Accordion.Item eventKey="0">
         <Accordion.Header>Bordering Nation</Accordion.Header>
         <Accordion.Body>
-		{country.borders ? (
+			{console.log(Borders())}
+		{/* {country.borders ? (
 			country.borders.map((border, index) => (
 				<div key={index}>{border}</div>
 			))
 			) : (
 				<p>No borders found for this country.</p>
-			)}
+			)} */}
         </Accordion.Body>
     </Accordion.Item>
 	<Accordion.Item eventKey="1">
