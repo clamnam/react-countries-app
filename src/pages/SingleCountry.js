@@ -1,113 +1,124 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Row, Col, Spinner, Image, Accordion , Card } from "react-bootstrap";
+import { Row, Col, Spinner, Image, Accordion } from "react-bootstrap";
 import axios from "axios";
 
 import Weather from "../components/Weather";
+import Borders from "../components/Borders";
+
 
 //////api bits
-const weatherKey = `c1ae794e4fbf4a4a82f173252230111`;
-const weatherUrl = `http://api.weatherapi.com/v1/current.json?key=c1ae794e4fbf4a4a82f173252230111&q=`;
+// const weatherKey = `c1ae794e4fbf4a4a82f173252230111`;
+// const weatherUrl = `http://api.weatherapi.com/v1/current.json?key=c1ae794e4fbf4a4a82f173252230111&q=`;
 const countryUrl = `https://restcountries.com/v3.1/name/`;
-const borderUrl = `https://restcountries.com/v3/alpha/`
+const borderUrl = `https://restcountries.com/v3/alpha/`;
+
 const SingleCountry = () => {
 	let { name } = useParams();
 	const [country, setCountry] = useState(null);
-	const [border, setBorder] = useState(null);
-
+	const [border, setBorder] = useState([]);
 	const [weather, setWeather] = useState(null);
 
-	const Borders = () => {
-		let borderData = [];
+	let BorderCard = border.map((countries, i) => {
+		return countries.map((country, j) => (
+		  <Borders
+			key={`${i}-${j}`}
+			name={country.name.common}
+			flag={country.flag}
+			region={country.region}
+		  />
+		));
+	  });
+	  
 	
-		if (country && country.borders != null) {
-			for (let x = 0; x < country.borders.length; x++) {
-				axios.get(`${borderUrl}${country.borders[x]}?fullText=true`).then((borderResponse) => {
-					borderData.push(borderResponse.data); 
-					setBorder(borderData);
-				});
-			}
-		}
-	};
-	
-	
-
 	useEffect(() => {
 		axios
-			.get(`${countryUrl}${name}?fullText=true`)
-			.then((countryResponse) => {
-				const countryData = countryResponse.data[0];
-				setCountry(countryData);
-				// console.log(countryData);
-
-				axios
-					.get(`${weatherUrl}${name}&aqi=no.`)
-					.then((weatherResponse) => {
-						const weatherData = weatherResponse.data;
-						// console.log(weatherData)
-						setWeather(weatherData);
-					})
-					.catch((weatherError) => {
-						console.log("Error fetching weather data: ", weatherError);
-					});
-			})
-			.catch((error) => {
-				console.log("Error fetching country data: ", error);
-			});
-			Borders();
-	}, [name,Borders]);
+		.get(`${countryUrl}${name}?fullText=true`)
+		.then((countryResponse) => {
+			const countryData = countryResponse.data[0];
+			setCountry(countryData);
 
 
 	
+			// Fetch data for each border
+			const borderRequests = countryData.borders.map((borderCode) => {
+			return axios.get(`${borderUrl}${borderCode}`);
+			});
+	
+			// Use Promise.all to wait for all requests to complete
+			Promise.all(borderRequests)
+			.then((borderResponses) => {
+				const borderData = borderResponses.map((response) => response.data);
 
-	let weatherInfo = (<p>There is no weather info right now</p>);
+				setBorder(borderData);
+			})
+			.catch((borderErrors) => {
+				console.error("Error fetching border data: ", borderErrors);
+			});
+		})
+		.catch((error) => {
+			console.error("Error fetching country data: ", error);
+		});
+	}, [name]);
+	
+    let WeatherData = () => {
+        if (country.name) {
+            return <Weather name={country.name.common} />;
+        }
+    };
 
-	if(weather?.current?.condition?.text){
-		weatherInfo = (
-			<div>
-				<h6>
-					<b>Temp:</b> {weather.current.temp_c}
-				</h6>
-				<h6>
-					<b>Condition:</b> {weather.current.condition}
-				</h6>
-			</div>
-		);
-	}
 
 	return (
 		<div>
-			{weather ? (
+			{country ? (
+				<>
+
 				<Row>
 					<Col className="my-3">
-						<Image className="w-100 " src={country.flags.svg} />
+						<Image className="w-100" src={country.flags.svg} />
 
-	<Accordion defaultActiveKey="0" className="my-2">
-    <Accordion.Item eventKey="0">
-        <Accordion.Header>Bordering Nation</Accordion.Header>
-        <Accordion.Body>
-			{console.log(Borders())}
-		{/* {country.borders ? (
-			country.borders.map((border, index) => (
-				<div key={index}>{border}</div>
-			))
-			) : (
-				<p>No borders found for this country.</p>
-			)} */}
-        </Accordion.Body>
-    </Accordion.Item>
-	<Accordion.Item eventKey="1">
-        <Accordion.Header>Map</Accordion.Header>
-        <Accordion.Body>
-		<iframe title="map" width="100%" height="400" frameBorder="0" src={`https://www.openstreetmap.org/export/embed.html?bbox=${country.latlng[1]},${country.latlng[0]}`} ></iframe>
+						<Accordion defaultActiveKey="0" className="my-2">
+							<Accordion.Item eventKey="0">
+								<Accordion.Header>Bordering Nation</Accordion.Header>
+								<Accordion.Body>
+									{country.border ? (
+										<>{BorderCard}</>
+									) : (
+										<p>No borders found for this country.</p>
+									)}
+								</Accordion.Body>
+							</Accordion.Item>
+							<Accordion.Item eventKey="1">
+								<Accordion.Header>Map</Accordion.Header>
+								<Accordion.Body>
+									<iframe
+										title="map"
+										width="100%"
+										height="400"
+										frameBorder="5"
+										src={`https://www.openstreetmap.org/export/embed.html?bbox=${country.latlng[1]},${country.latlng[0]}&zoom=4`}
+									></iframe>
+								</Accordion.Body>
+							</Accordion.Item>
+							<Accordion.Item eventKey="2">
+    <Accordion.Header>Weather</Accordion.Header>
+    <Accordion.Body>
 
-        </Accordion.Body>
-    </Accordion.Item>
-    </Accordion>
+	{WeatherData()}
+	{WeatherData}
+    </Accordion.Body>
+</Accordion.Item>
+
+
+
+							
+						</Accordion>
+
 					</Col>
 					<Col className="my-3">
 						<h1 className="bd-title mb-4">
 							<b> {country.name.common}</b>
+
 						</h1>
 						<h5>
 							<b>Official Name:</b> {country.name.official}
@@ -119,16 +130,11 @@ const SingleCountry = () => {
 							<b>Subregion :</b> {country.subregion}
 						</h5>
 
-						<Col>
-							<h2>
-								<b>Weather</b>
-							</h2>
-							<div>
-							{weatherInfo}
-							</div>
+
 						</Col>
-					</Col>
+						
 				</Row>
+				</>
 			) : (
 				<Spinner animation="grow" />
 			)}
