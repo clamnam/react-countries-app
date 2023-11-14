@@ -21,12 +21,13 @@ const SingleCountry = () => {
 
 	let BorderCard = border.map((countries, i) => {
 		return countries.map((country, j) => (
-		  <Borders
+		<Borders
 			key={`${i}-${j}`}
+			id={`${i}-${j}`}
 			name={country.name.common}
-			flag={country.flag}
+			// flag={country.demonyms.flag}
 			region={country.region}
-		  />
+		/>
 		));
 	  });
 	  
@@ -36,6 +37,7 @@ const SingleCountry = () => {
 		.get(`${countryUrl}${name}?fullText=true`)
 		.then((countryResponse) => {
 			const countryData = countryResponse.data[0];
+
 			setCountry(countryData);
 
 
@@ -79,13 +81,10 @@ const SingleCountry = () => {
 
 						<Accordion defaultActiveKey="0" className="my-2">
 							<Accordion.Item eventKey="0">
-								<Accordion.Header>Bordering Nation</Accordion.Header>
+								<Accordion.Header>Weather</Accordion.Header>
 								<Accordion.Body>
-									{country.border ? (
-										<>{BorderCard}</>
-									) : (
-										<p>No borders found for this country.</p>
-									)}
+								{WeatherData()}
+	{WeatherData}
 								</Accordion.Body>
 							</Accordion.Item>
 							<Accordion.Item eventKey="1">
@@ -101,11 +100,15 @@ const SingleCountry = () => {
 								</Accordion.Body>
 							</Accordion.Item>
 							<Accordion.Item eventKey="2">
-    <Accordion.Header>Weather</Accordion.Header>
+    <Accordion.Header>Bordering Nations</Accordion.Header>
     <Accordion.Body>
+	{border ? (
+										<>{BorderCard}</>
+									) : (
+										<p>No borders found for this country.</p>
+									)}
+									
 
-	{WeatherData()}
-	{WeatherData}
     </Accordion.Body>
 </Accordion.Item>
 

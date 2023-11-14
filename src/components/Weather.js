@@ -8,7 +8,7 @@ const Weather = (props) =>
 {
     
     const [weather,setWeather] = useState([]);
-    console.log(`${weatherUrl}${props.name}&aqi=no.`)
+    // console.log(`${weatherUrl}${props.name}&aqi=no.`)
 
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const Weather = (props) =>
             .get(`${weatherUrl}${props.name}&aqi=no.`)
             .then((weatherResponse) => {
                 const weatherData = weatherResponse.data;
-                console.log(weatherData)
+                // console.log(weatherData)
                 setWeather(weatherData);
             })
             .catch((weatherError) => {
