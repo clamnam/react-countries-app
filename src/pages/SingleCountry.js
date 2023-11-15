@@ -72,50 +72,47 @@ const SingleCountry = () => {
 
 	return (
 		<div>
-			{country ? (
-				<>
+		{country ? (
+		<>
+			<Row>
+				<Col className="my-3">
+					<Image className="w-100" src={country.flags.svg} />
 
-				<Row>
-					<Col className="my-3">
-						<Image className="w-100" src={country.flags.svg} />
+					<Accordion defaultActiveKey="0" className="my-2">
+						<Accordion.Item eventKey="0">
+							<Accordion.Header>Weather</Accordion.Header>
+							<Accordion.Body>
+							{WeatherData()}
+							{WeatherData}
+							</Accordion.Body>
+						</Accordion.Item>
 
-						<Accordion defaultActiveKey="0" className="my-2">
-							<Accordion.Item eventKey="0">
-								<Accordion.Header>Weather</Accordion.Header>
-								<Accordion.Body>
-								{WeatherData()}
-	{WeatherData}
-								</Accordion.Body>
-							</Accordion.Item>
-							<Accordion.Item eventKey="1">
-								<Accordion.Header>Map</Accordion.Header>
-								<Accordion.Body>
-									<iframe
-										title="map"
-										width="100%"
-										height="400"
-										frameBorder="5"
-										src={`https://www.openstreetmap.org/export/embed.html?bbox=${country.latlng[1]},${country.latlng[0]}&zoom=4`}
-									></iframe>
-								</Accordion.Body>
-							</Accordion.Item>
-							<Accordion.Item eventKey="2">
-    <Accordion.Header>Bordering Nations</Accordion.Header>
-    <Accordion.Body>
-	{border ? (
-										<>{BorderCard}</>
-									) : (
-										<p>No borders found for this country.</p>
-									)}
+						<Accordion.Item eventKey="1">
+							<Accordion.Header>Map</Accordion.Header>
+							<Accordion.Body>
+								<iframe
+									title="map"
+									width="100%"
+									height="400"
+									frameBorder="5"
+									src={`https://www.openstreetmap.org/export/embed.html?bbox=${country.latlng[1]},${country.latlng[0]}&zoom=4`}
+								></iframe>
+							</Accordion.Body>
+						</Accordion.Item>
+
+						<Accordion.Item eventKey="2">
+    						<Accordion.Header>Bordering Nations</Accordion.Header>
+    						<Accordion.Body>
+								{border ? (
+									<>{BorderCard}</>
+								) : (
+									<p>No borders found for this country.</p>
+								)}
 									
 
-    </Accordion.Body>
-</Accordion.Item>
-
-
-
-							
-						</Accordion>
+    						</Accordion.Body>
+						</Accordion.Item>
+					</Accordion>
 
 					</Col>
 					<Col className="my-3">
