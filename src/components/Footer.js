@@ -9,8 +9,8 @@ const Footer = () => {
         <div className="fixed-bottom">  
             <Navbar className='bg-dark'>
                 <Container>
-                    <NavbarBrand className='text-white'>Check Out come Countries</NavbarBrand>
-                </Container>
+                <Link className='p-3 btn btn-dark' to={'/'}>                    Check Out come Countries
+</Link>                </Container>
             </Navbar>
         </div>
         

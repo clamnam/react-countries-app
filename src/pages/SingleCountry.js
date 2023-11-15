@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Row, Col, Spinner, Image, Accordion } from "react-bootstrap";
+import { Row, Col, Spinner, Image, Accordion ,Container} from "react-bootstrap";
 import axios from "axios";
 
 import Weather from "../components/Weather";
@@ -17,7 +17,6 @@ const SingleCountry = () => {
 	let { name } = useParams();
 	const [country, setCountry] = useState(null);
 	const [border, setBorder] = useState([]);
-	const [weather, setWeather] = useState(null);
 
 	let BorderCard = border.map((countries, i) => {
 		return countries.map((country, j) => (
@@ -51,7 +50,6 @@ const SingleCountry = () => {
 			Promise.all(borderRequests)
 			.then((borderResponses) => {
 				const borderData = borderResponses.map((response) => response.data);
-
 				setBorder(borderData);
 			})
 			.catch((borderErrors) => {
@@ -71,23 +69,42 @@ const SingleCountry = () => {
 
 
 	return (
-		<div>
-		{country ? (
-		<>
-			<Row>
-				<Col className="my-3">
-					<Image className="w-100" src={country.flags.svg} />
+		<Container fluid className="">
+			{country ? (
+			<Row className="my-5  bg-off-white ">
+								<h1 className="bd-title text-center mt-4">
+							<b> {country.name.common}</b>
 
-					<Accordion defaultActiveKey="0" className="my-2">
-						<Accordion.Item eventKey="0">
-							<Accordion.Header>Weather</Accordion.Header>
-							<Accordion.Body>
+						</h1>
+				<Col><Image className=" my-3" src={country.flags.svg} fluid/></Col>
+				<Col className="my-3">
+					
+
+
+<Row>
+<Col className="my-4">
+
+<h4>
+	<b>Official Name:</b> {country.name.official}
+</h4>
+<h4>
+	<b>Continent :</b> {country.region}
+</h4>
+<h4>
+	<b>Subregion :</b> {country.subregion}
+</h4>
+
+
+</Col>
+
 							{WeatherData()}
 							{WeatherData}
-							</Accordion.Body>
-						</Accordion.Item>
 
-						<Accordion.Item eventKey="1">
+
+</Row>
+					</Col>
+
+						<Accordion className="">						<Accordion.Item eventKey="1">
 							<Accordion.Header>Map</Accordion.Header>
 							<Accordion.Body>
 								<iframe
@@ -98,12 +115,12 @@ const SingleCountry = () => {
 									src={`https://www.openstreetmap.org/export/embed.html?bbox=${country.latlng[1]},${country.latlng[0]}&zoom=4`}
 								></iframe>
 							</Accordion.Body>
-						</Accordion.Item>
-
-						<Accordion.Item eventKey="2">
-    						<Accordion.Header>Bordering Nations</Accordion.Header>
+						</Accordion.Item><Accordion.Item className="mb-3"eventKey="2">
+    						<Accordion.Header>
+							Bordering Nations
+							</Accordion.Header>
     						<Accordion.Body>
-								{border ? (
+								{border[0] ? (
 									<>{BorderCard}</>
 								) : (
 									<p>No borders found for this country.</p>
@@ -111,34 +128,12 @@ const SingleCountry = () => {
 									
 
     						</Accordion.Body>
-						</Accordion.Item>
-					</Accordion>
-
-					</Col>
-					<Col className="my-3">
-						<h1 className="bd-title mb-4">
-							<b> {country.name.common}</b>
-
-						</h1>
-						<h5>
-							<b>Official Name:</b> {country.name.official}
-						</h5>
-						<h5>
-							<b>Continent :</b> {country.region}
-						</h5>
-						<h5>
-							<b>Subregion :</b> {country.subregion}
-						</h5>
-
-
-						</Col>
-						
+						</Accordion.Item></Accordion>
 				</Row>
-				</>
-			) : (
-				<Spinner animation="grow" />
-			)}
-		</div>
+				) : (
+					<Spinner animation="grow" />
+				)}
+				</Container>
 	);
 };
 

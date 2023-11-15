@@ -29,13 +29,14 @@ let weatherData = <p>There is no weather Data right now</p>;
 if (weather?.current?.condition) {
     weatherData = (
         <div>
-            <h6>
+            <h2>Weather</h2>
+            <h5>
                 <b>Temp:</b> {weather.current.temp_c} °C
-            </h6>
-            <h6><b>Feels Like</b> {weather.current.feelslike_c} °C</h6>
-            <h6>
+            </h5>
+            <h5><b>Feels Like</b> {weather.current.feelslike_c} °C</h5>
+            <h5>
                 <b>Wind speed:</b> {weather.current.wind_kph} kph
-            </h6>
+            </h5>
         </div>
     );
 }

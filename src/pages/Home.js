@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState , useEffect } from 'react';
-import {Row, Col, Button} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import CountryCard from '../components/CountryCard'
 
 
@@ -12,7 +12,6 @@ const URL = `https://restcountries.com/v3.1/`
 const Home = (props) => {
     const [countriesList, setCountriesList] = useState([]);
     const [filteredCountriesList, setFilteredCountriesList] = useState([]);
-    const [term, setTerm] = useState('');
     // const [countries, setCountries] = useState([]);
 
     let CountryCards = filteredCountriesList.map((country, i) => {
@@ -24,22 +23,22 @@ const Home = (props) => {
     });
 
 ///////////////////////////////////////////////////////////////Search Handle Change
-    const handleChange = (e) => {
-        const newSearchTerm = e.target.value;
-        console.log("here")
-        setTerm(newSearchTerm);
+    // const handleChange = (e) => {
+    //     const newSearchTerm = e.target.value;
+    //     console.log("here")
+    //     setTerm(newSearchTerm);
 
-        if (newSearchTerm === '') {
-            setFilteredCountriesList(countriesList);
-        } else if (newSearchTerm.length >= 1 && countriesList.length >= 1) {
-            const filteredCountries = countriesList.filter((country) => {
-                return country.name.common.toLowerCase().includes(newSearchTerm.toLowerCase());
-            });
-            setFilteredCountriesList(filteredCountries);
-        } else {
-            setFilteredCountriesList([]);
-        }
-    };
+    //     if (newSearchTerm === '') {
+    //         setFilteredCountriesList(countriesList);
+    //     } else if (newSearchTerm.length >= 1 && countriesList.length >= 1) {
+    //         const filteredCountries = countriesList.filter((country) => {
+    //             return country.name.common.toLowerCase().includes(newSearchTerm.toLowerCase());
+    //         });
+    //         setFilteredCountriesList(filteredCountries);
+    //     } else {
+    //         setFilteredCountriesList([]);
+    //     }
+    // };
     
 
 useEffect(() => {
@@ -83,11 +82,10 @@ useEffect(() => {
     return (
         <>
         
-        <Row className='my-3 '>
+        <Row className='my-3 mt-5 '>
         <Col className='p-0'>
 
         
-        {/* <Button className='m-2 p-2 bg-secondary border-0'  variant="primary" onClick={handleClick}>Search</Button> */}
         </Col>
         </Row>
         <Row className='g-2 m-4' md={5} xs={1}>
