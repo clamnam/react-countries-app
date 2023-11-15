@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { useState , useEffect } from 'react';
-import {Row, Col} from 'react-bootstrap';
+import {Row, Col,Dropdown} from 'react-bootstrap';
 import CountryCard from '../components/CountryCard'
+// import Dropdown from 'react-navbar/dist/Dropdown';
 
 
 
@@ -12,7 +13,7 @@ const URL = `https://restcountries.com/v3.1/`
 const Home = (props) => {
     const [countriesList, setCountriesList] = useState([]);
     const [filteredCountriesList, setFilteredCountriesList] = useState([]);
-    // const [countries, setCountries] = useState([]);
+    // const [value, setValue] = useState([]);
 
     let CountryCards = filteredCountriesList.map((country, i) => {
         return (
@@ -22,23 +23,22 @@ const Home = (props) => {
         );
     });
 
-///////////////////////////////////////////////////////////////Search Handle Change
-    // const handleChange = (e) => {
-    //     const newSearchTerm = e.target.value;
-    //     console.log("here")
-    //     setTerm(newSearchTerm);
 
-    //     if (newSearchTerm === '') {
-    //         setFilteredCountriesList(countriesList);
-    //     } else if (newSearchTerm.length >= 1 && countriesList.length >= 1) {
-    //         const filteredCountries = countriesList.filter((country) => {
-    //             return country.name.common.toLowerCase().includes(newSearchTerm.toLowerCase());
-    //         });
-    //         setFilteredCountriesList(filteredCountries);
-    //     } else {
-    //         setFilteredCountriesList([]);
-    //     }
-    // };
+    const handleSelect=(e)=>{
+        // console.log
+        if(e === "All"){
+            setFilteredCountriesList(countriesList);
+
+
+    }else {
+        
+        const filteredCountries = countriesList.filter((country) => {
+            return country.region.includes(e);
+            });
+            setFilteredCountriesList(filteredCountries);
+        
+    }
+    }
     
 
 useEffect(() => {
@@ -80,21 +80,37 @@ useEffect(() => {
 
 
     return (
-        <>
+        <div className='my-5'>
         
-        <Row className='my-3 mt-5 '>
+        <Row className='g-2 my-5 m-3  '>
         <Col className='p-0'>
 
-        
+        <Dropdown className='mt-3 primary'onSelect={handleSelect}>
+        <Dropdown.Toggle className='' variant="success" id="dropdown-basic">
+        Region Selector
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+        <Dropdown.Item eventKey="" >All</Dropdown.Item>
+
+        <Dropdown.Item eventKey="Africa" >Africa</Dropdown.Item>
+        <Dropdown.Item eventKey="Europe" >Europe</Dropdown.Item>
+        <Dropdown.Item eventKey="Oceania" >Oceania</Dropdown.Item>
+        <Dropdown.Item eventKey="Americas" >Americas</Dropdown.Item>
+
+        <Dropdown.Item eventKey="Asia" >Asia</Dropdown.Item>
+        </Dropdown.Menu>
+    </Dropdown>
+
         </Col>
         </Row>
-        <Row className='g-2 m-4' md={5} xs={1}>
+        <Row className='g-2 m-3 mb-5' md={5} xs={1}>
         
         
         
             {CountryCards}
         </Row>
-        </>
+        </div>
     );
 
 };

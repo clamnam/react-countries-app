@@ -1,6 +1,6 @@
 import { Link,useNavigate } from 'react-router-dom';
 import {NavbarBrand} from 'react-bootstrap'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 // import {Container } from "react-bootstrap"
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -8,7 +8,7 @@ import { useState } from 'react';
 const Navbar = (props) => {
 
     let Navigate = useNavigate();
-    const [searchTerm,setSearchTerm] = useState(props.searchTerm)
+const [searchTerm, setSearchTerm] = useState(props.searchTerm || ''); // Initialize with an empty string if props.searchTerm is undefined
     const [isNavHidden, setIsNavHidden] = useState(false);
 
 
@@ -34,15 +34,9 @@ const NavReduce = ()=>{
 
     
 }
-const reset =()=>{
-    let newval = ''
 
-    setSearchTerm(newval)
-    props.onHandleChange(newval);
 
-    Navigate('/');
 
-}
 const handleKeyDown = (e) =>{
 
 if(e.nativeEvent.key === "Enter"){
@@ -50,7 +44,7 @@ if(e.nativeEvent.key === "Enter"){
     setSearchTerm(newval)
     Navigate('/');
 
-    props.onHandleChange(newval);
+
 }
 }
     return (
@@ -58,8 +52,7 @@ if(e.nativeEvent.key === "Enter"){
         {NavReduce()}
         <nav className={` fixed-top bg-dark ${isNavHidden ? ('nav--hidden'):("nav")}`}>
             
-            <Link className='p-3 btn btn-dark' to={'/'} onClick={reset}> <NavbarBrand className='text-white'>Check Out come Countries</NavbarBrand>
-</Link>
+        <Link className='p-3 btn btn-dark' to={'/'} > <NavbarBrand className='text-white'>Check Out come Countries</NavbarBrand></Link>
             <input type='text' onChange={handleInputChange} onKeyDown={handleKeyDown} value={searchTerm} placeholder="Search for countries" />
 
             </nav>

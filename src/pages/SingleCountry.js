@@ -42,12 +42,12 @@ const SingleCountry = () => {
 
 	
 			// Fetch data for each border
-			const borderRequests = countryData.borders.map((borderCode) => {
+			const borderRequests = ()=>{countryData.borders.map((borderCode) => {
 			return axios.get(`${borderUrl}${borderCode}`);
-			});
+			});}
 	
 			// Use Promise.all to wait for all requests to complete
-			Promise.all(borderRequests)
+			Promise.all(borderRequests())
 			.then((borderResponses) => {
 				const borderData = borderResponses.map((response) => response.data);
 				setBorder(borderData);
