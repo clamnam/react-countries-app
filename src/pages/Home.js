@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState , useEffect } from 'react';
-import {Row, Col,Dropdown} from 'react-bootstrap';
+import {Row, Col,Dropdown ,Container} from 'react-bootstrap';
 import CountryCard from '../components/CountryCard'
 // import Dropdown from 'react-navbar/dist/Dropdown';
 
@@ -80,9 +80,9 @@ useEffect(() => {
 
 
     return (
-        <div className='my-5'>
+        <Container className='mb-5'>
         
-        <Row className='g-2 my-5 m-3  '>
+        <Row className='g-2 mt-5 mb-3 '>
         <Col className='p-0'>
 
         <Dropdown className='mt-3 primary'onSelect={handleSelect}>
@@ -104,13 +104,13 @@ useEffect(() => {
 
         </Col>
         </Row>
-        <Row className='g-2 m-3 mb-5' md={5} xs={1}>
+        <Row className='g-2  mb-5' md={5} xs={1}>
         
         
         
             {CountryCards}
         </Row>
-        </div>
+        </Container>
     );
 
 };

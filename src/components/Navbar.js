@@ -7,7 +7,7 @@ import { useState,useEffect } from 'react';
 // import Home from '../pages/Home'
 const Navbar = (props) => {
 
-    let Navigate = useNavigate();
+let Navigate = useNavigate();
 const [searchTerm, setSearchTerm] = useState(props.searchTerm || ''); // Initialize with an empty string if props.searchTerm is undefined
     const [isNavHidden, setIsNavHidden] = useState(false);
 
@@ -52,7 +52,7 @@ if(e.nativeEvent.key === "Enter"){
         {NavReduce()}
         <nav className={` fixed-top bg-dark ${isNavHidden ? ('nav--hidden'):("nav")}`}>
             
-        <Link className='p-3 btn btn-dark' to={'/'} > <NavbarBrand className='text-white'>Check Out come Countries</NavbarBrand></Link>
+        <Link className='p-3 btn btn-dark text-off-white' to={'/'}>Check Out come Countries</Link>                
             <input type='text' onChange={handleInputChange} onKeyDown={handleKeyDown} value={searchTerm} placeholder="Search for countries" />
 
             </nav>

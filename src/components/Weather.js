@@ -12,6 +12,7 @@ const Weather = (props) =>
 
 
     useEffect(() => {
+        
         axios
             .get(`${weatherUrl}${props.name}&aqi=no.`)
             .then((weatherResponse) => {

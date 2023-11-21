@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
 import {useState} from 'react'
 import './assets/app.css'
 
@@ -11,34 +10,31 @@ import Footer from "./components/Footer";
 
 
 function App() {
+
+  
   const [searchTerm, setSearchTerm] = useState('');
 
   const onHandleChange = (e)=>{
     setSearchTerm(e);
   }
   
+
   
   return (
+    <div className='bg-off-white'>
     <Router >
-            <Navbar onHandleChange={onHandleChange}/>
+        <Navbar onHandleChange={onHandleChange}/>
 
-      <Container fluid className="container-fluid bg-off-white">
-      <Container  >
-        <Row>
-        <Col>
         <Routes>
         <Route path='/' element={<Home searchTerm={searchTerm}/>} />
 
-        <Route path="/" element={<Home/>}/>
-        <Route path='/country/:name' element={<SingleCountry/>} />        </Routes>
-        </Col>
-        </Row>
-      </Container>
 
-      </Container>
+        <Route path='/country/:name' element={<SingleCountry/>} />        </Routes>
+
       <Footer className='fixed-bottom'/>
 
       </Router>
+      </div>
   );
 }
 

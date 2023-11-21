@@ -1,6 +1,5 @@
-import { useParams,Link } from "react-router-dom";
-import {Card , Image } from "react-bootstrap";
-import axios from "axios";
+import { Link } from "react-router-dom";
+import {Card  } from "react-bootstrap";
 
 
 

@@ -8,9 +8,8 @@ const Footer = () => {
     return (
         <div className="fixed-bottom">  
             <Navbar className='bg-dark'>
-                <Container>
-                <Link className='p-3 btn btn-dark' to={'/'}>                    Check Out come Countries
-</Link>                </Container>
+                
+                <Link className=' btn btn-dark text-off-white' to={'/'}>Check Out come Countries</Link>                
             </Navbar>
         </div>
         
